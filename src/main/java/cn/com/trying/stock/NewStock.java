@@ -3,31 +3,24 @@ package cn.com.trying.stock;
 import cn.com.trying.utils.MathUtil;
 /**
 * @Title: NewStock
-* @Description: 
+* @Description:
 * @author huxx
 * @date 2019/9/19 下午3:20
-* @update  
+* @update
 */
 public class NewStock {
     public static void main(String[] args) {
-
-        double basePrice = 14.39;
-        int baseCount = 500;
-        int count = 50;
-
         cacluNewStock(14.39,500,20);
-
-
     }
 
     /**
-    * @Title: 
-    * @Description: 
-    * @param 
-    * @return 
+    * @Title:
+    * @Description:
+    * @param
+    * @return
     * @author huxx
     * @date 2019/9/19 下午3:20
-    * @update  
+    * @update
     */
     public static void cacluNewStock(double startPrice,int stockCount,int num){
         double price = startPrice;
