@@ -1,6 +1,11 @@
 package cn.com.trying.stock;
 
 import cn.com.trying.utils.MathUtil;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
 * @Title: NewStock
 * @Description:
@@ -8,11 +13,20 @@ import cn.com.trying.utils.MathUtil;
 * @date 2019/9/19 下午3:20
 * @update
 */
+@RestController
+@EnableAutoConfiguration
 public class NewStock {
     public static void main(String[] args) {
-        cacluNewStock(14.39,500,20);
+//       String str = cacluNewStock(14.39,500,20);
+//       System.out.println(str);
+        SpringApplication.run(NewStock.class, args);
     }
 
+    @RequestMapping("/")
+    String home() {
+        String str = cacluNewStock(14.39,500,20);
+        return str;
+    }
     /**
     * @Title:
     * @Description:
@@ -22,7 +36,8 @@ public class NewStock {
     * @date 2019/9/19 下午3:20
     * @update
     */
-    public static void cacluNewStock(double startPrice,int stockCount,int num){
+    public  String cacluNewStock(double startPrice,int stockCount,int num){
+        String str = "";
         double price = startPrice;
         for(int i = 1; i<= num; i++){
             double inc = 0.44;
@@ -31,7 +46,8 @@ public class NewStock {
             }
             price = Double.valueOf(MathUtil.mutiply(price + "", (1 + inc) + "", 2));
             String profit = MathUtil.mutiply((price-startPrice)+"",stockCount+"",2);
-            System.out.println("第"+i+"板后的价格："+price+"------盈利："+profit);
+            str += "第"+i+"板后的价格："+price+"------盈利："+profit+"<br/>";
         }
+        return str;
     }
 }
