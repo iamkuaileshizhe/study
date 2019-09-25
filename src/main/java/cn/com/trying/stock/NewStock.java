@@ -1,5 +1,6 @@
 package cn.com.trying.stock;
 
+import cn.com.trying.io.ExportDataFromExcel;
 import cn.com.trying.utils.MathUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,6 +21,7 @@ public class NewStock {
 //       String str = cacluNewStock(14.39,500,20);
 //       System.out.println(str);
         SpringApplication.run(NewStock.class, args);
+        ExportDataFromExcel.generateSql();
     }
 
     @RequestMapping("/")
