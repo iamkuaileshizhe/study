@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 * @date 2019/9/19 下午3:20
 * @update
 */
+@RestController
+@RequestMapping("/stock")
 public class NewStockService {
     public static void main(String[] args) {
         NewStockService newStockService = new NewStockService();
         newStockService.cacluNewStock(14.39,500,20);
     }
 
-    @RequestMapping("/home")
+    @RequestMapping("home")
     String home() {
         String str = cacluNewStock(14.39,500,20);
         return str;

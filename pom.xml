@@ -46,7 +46,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.com.trying.sys.IndexController</mainClass>
+<!--                    <mainClass>cn.com.trying.sys.IndexController</mainClass>-->
 <!--                    <layout>ZIP</layout>-->
                 </configuration>
             </plugin>

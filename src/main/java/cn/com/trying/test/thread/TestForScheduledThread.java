@@ -1,5 +1,7 @@
 package cn.com.trying.test.thread;
 
+import cn.com.trying.utils.DateUtil;
+
 public class TestForScheduledThread implements Runnable {
     private String name = "";
     /**
@@ -15,10 +17,10 @@ public class TestForScheduledThread implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println("-------------------------------TestForScheduledThread------"+name);
+        System.out.println("-------------------------------TestForScheduledThread------"+ DateUtil.getDateTime() +"-----"+Thread.currentThread().getName());
         //使进行阻塞10方便看进程的调度顺序
         try {
-            Thread.sleep(10*1000L);
+            Thread.sleep(5*1000L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
