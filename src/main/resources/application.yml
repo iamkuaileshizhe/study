@@ -1,0 +1,24 @@
+info:
+  head: head
+  body: body
+management:
+  endpoints:
+    web:
+      exposure:
+        #加载所有的端点，默认只加载了info、health
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    #可以关闭指定的端点
+    shutdown:
+      enabled: false
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.1.12:3306/workflow?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
