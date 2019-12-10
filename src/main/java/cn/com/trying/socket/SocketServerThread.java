@@ -28,7 +28,7 @@ public class SocketServerThread extends Thread    {
             while(true){
                 System.out.println("wait client connect...");
                 System.out.println("------------"+server.isClosed()+"---");
-                Socket socket = server.accept();//此方法会堵塞
+                Socket socket = server.accept();//此方法会堵塞,一直等待到有socket客户端连接
 
                 //此处用线程的方式处理每个socket请求的业务处理
                 BusinesshanderThread businesshanderThread = new BusinesshanderThread(socket);
