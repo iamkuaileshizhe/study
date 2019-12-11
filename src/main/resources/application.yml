@@ -2,6 +2,7 @@ info:
   head: head
   body: body
 management:
+
   endpoints:
     web:
       exposure:
@@ -22,3 +23,6 @@ spring:
 
   jpa:
     show-sql: true
+
+server:
+  port: 8888
