@@ -772,12 +772,7 @@ public class DateUtil {
         int day_of_month =  getDayOfMonth(date);
         int week_of_year = getWeekOfYear(date);
 
-		Date monday_of_week = getMondayOfWeek(date);
-		String mondayOfWeek = dateTimeToString(monday_of_week);
-		Date sunday_of_week = getSundayOfWeek(date);
-		String sundayOfWeek = dateTimeToString(sunday_of_week);
-		Date thursday  = getThursdayOfWeek(date);
-		String thursdayOfWeek = dateTimeToString(thursday);
+
 		int dd = getWeekCountOfYear(date);
 
 		int weekNum = getWeekCountOfMonth(date);
