@@ -2,6 +2,7 @@ package cn.com.trying.test.jpa.controller;
 
 import cn.com.trying.test.jpa.bean.Person;
 import cn.com.trying.test.jpa.dao.PersonRepository;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,14 +40,18 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/nameAndAddressQuery",method = RequestMethod.POST)
-    public Person nameAndAddressQuery(@RequestBody Map<String,String> map){
+    public  Person nameAndAddressQuery(@RequestBody Map<String,String> map){
         Person p = personRepository
                 .withNameAndAddressQuery( map.get("name"),  map.get("address"));
         return p;
     }
 
-    @RequestMapping(value = "/nameAndAddressNamedQuery",method = RequestMethod.POST)
-    public Person nameAndAddressNamedQuery(@RequestBody Map<String,String> map){
+    @ResponseBody
+    @RequestMapping(value = "/nameAndAddressNamedQuery",method = RequestMethod.GET)
+    public Person nameAndAddressNamedQuery( ){
+        Map<String,String> map = Maps.newHashMap();
+        map.put("name","333");
+        map.put("adress","dfds");
         Person p = personRepository
                 .withNameAndAddressNamedQuery(map.get("name"),  map.get("address"));
         return p;
