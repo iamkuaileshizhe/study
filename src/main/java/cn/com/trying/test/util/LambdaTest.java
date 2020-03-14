@@ -59,7 +59,7 @@ public class LambdaTest {
         List<Apple> iteraterList = testIterater(appleList);
         testWhile(appleList);
 
-        //方法引用  lambda表达式   流
+        //方法引用  lambda表达式   流   默认方法
     }
     private static List<Apple>  testStream(List<Apple> appleList){
 
