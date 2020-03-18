@@ -5,5 +5,14 @@ package cn.com.trying.test.util;
  */
 public interface LambdaFunc {
 
-    String stringFunc(String n);
+    /**
+    * @Title:
+    * @Description: 字符串处理
+    * @param
+    * @return
+    * @author huxx
+    * @date 2020/3/16 上午10:34
+    * @update
+    */
+    String handleString(String n);
 }

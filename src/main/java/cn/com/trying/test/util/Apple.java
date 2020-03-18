@@ -4,7 +4,14 @@ public class Apple {
     String color;
     String id;
     int weight;
+    Apple(){
 
+    }
+    Apple(String color,String id,int weight){
+        this.color = color;
+        this.id = id;
+        this.weight = weight;
+    }
 
     public String getColor() {
         return color;
