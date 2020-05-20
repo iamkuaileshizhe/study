@@ -24,9 +24,9 @@ public class JPATest {
     @Test
     public void testInsert() {
         String time = DateUtil.getDate();
-        int insertNum = 2;
-        insert("601038",-2395,10.17,time,insertNum);
-        insert("600127",-1844,11.49,time,insertNum);
+        int insertNum = 1;
+        insert("601038",-2476,10.21,time,insertNum);
+        insert("600127",-1897,11.52,time,insertNum);
 
     }
 
