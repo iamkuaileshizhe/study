@@ -74,6 +74,27 @@
 
     </dependencies>
 
-
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/repositories/central</url>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+        <repository>
+            <id>spring-release</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/release</url>
+        </repository>
+        <repository>
+            <id>spring-snapshot</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/snapshot/</url>
+        </repository>
+    </repositories>
 
 </project>
