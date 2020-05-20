@@ -1,13 +1,11 @@
-package cn.com.trying.test.jpa.dao;
+package cn.com.trying.stock.finacial.dao;
 
-import cn.com.trying.test.jpa.bean.Financial;
-import cn.com.trying.test.jpa.bean.Person;
+import cn.com.trying.stock.finacial.bean.Financial;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
 * @Title: FinancialRepository

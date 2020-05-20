@@ -1,4 +1,4 @@
-package cn.com.trying.test.jpa.bean;
+package cn.com.trying.stock.finacial.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,11 +13,13 @@ public class Financial {
 
     private String code;
 
-    private double num;
+    private double amount;
 
     private double price;
 
     private String time;
+
+    private long  num;
 
 
 
@@ -37,11 +39,19 @@ public class Financial {
         this.code = code;
     }
 
-    public double getNum() {
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public long getNum() {
         return num;
     }
 
-    public void setNum(double num) {
+    public void setNum(long num) {
         this.num = num;
     }
 

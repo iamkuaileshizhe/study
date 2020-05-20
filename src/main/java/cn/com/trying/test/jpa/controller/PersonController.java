@@ -1,7 +1,6 @@
 package cn.com.trying.test.jpa.controller;
 
 import cn.com.trying.test.jpa.bean.Person;
-import cn.com.trying.test.jpa.dao.FinancialRepository;
 import cn.com.trying.test.jpa.dao.PersonRepository;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
