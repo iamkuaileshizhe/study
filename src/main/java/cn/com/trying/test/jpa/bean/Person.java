@@ -9,8 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-@Entity
-@NamedQuery(name = "Person.withNameAndAddressNamedQuery",query = "select p from Person p where p.name = ?1 and address=?2")
+@Entity(name = "t_person")
+//@NamedQuery(name = "Person.withNameAndAddressNamedQuery",query = "select p from Person p where p.name = ?1 and address=?2")
 public class Person {
     @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)

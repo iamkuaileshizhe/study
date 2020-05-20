@@ -18,8 +18,7 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
 
     Person findByNameAndAddress(String name,String address);
 
-    @Query("select p from Person p where p.name= :name and p.address like concat('%',:address,'%')")
-    Person withNameAndAddressQuery(@Param("name")String name,@Param("address")String address);
+    @Query("select p from t_person p where p.name= :name and p.address like concat('%',:address,'%')")
+    Person findNameAndAddressQuery(@Param("name")String name,@Param("address")String address);
 
-    Person withNameAndAddressNamedQuery(String name,String address);
 }

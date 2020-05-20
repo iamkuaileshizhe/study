@@ -159,7 +159,6 @@ public class TestFor {
 //            apple.setColor(color);
 //            list.add(apple);
 //        });
-
         long end = System.currentTimeMillis();
         System.out.println("数据创建时间----"+(end - cur)+"---"+list.size());
         return list;

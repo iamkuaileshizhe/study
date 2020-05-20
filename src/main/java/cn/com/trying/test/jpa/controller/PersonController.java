@@ -1,6 +1,7 @@
 package cn.com.trying.test.jpa.controller;
 
 import cn.com.trying.test.jpa.bean.Person;
+import cn.com.trying.test.jpa.dao.FinancialRepository;
 import cn.com.trying.test.jpa.dao.PersonRepository;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ public class PersonController {
 
     @Autowired
     PersonRepository personRepository;
-
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public Person save(@RequestBody Map<String,String> map){
         Person p = personRepository.save(
@@ -42,7 +42,7 @@ public class PersonController {
     @RequestMapping(value = "/nameAndAddressQuery",method = RequestMethod.POST)
     public  Person nameAndAddressQuery(@RequestBody Map<String,String> map){
         Person p = personRepository
-                .withNameAndAddressQuery( map.get("name"),  map.get("address"));
+                .findNameAndAddressQuery( map.get("name"),  map.get("address"));
         return p;
     }
 
@@ -52,9 +52,10 @@ public class PersonController {
         Map<String,String> map = Maps.newHashMap();
         map.put("name","333");
         map.put("adress","dfds");
-        Person p = personRepository
-                .withNameAndAddressNamedQuery(map.get("name"),  map.get("address"));
-        return p;
+//        Person p = personRepository
+//                .findNameAndAddressNamedQuery(map.get("name"),  map.get("address"));
+//        return p;
+        return null;
     }
 
     @RequestMapping(value = "/sort",method = RequestMethod.POST)

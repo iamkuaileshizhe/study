@@ -23,6 +23,20 @@ spring:
 
   jpa:
     show-sql: true
+    database: mysql
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+
+#    #JPA Configuration:
+#    spring.jpa.database=mysql
+#    spring.jpa.show-sql=true
+#    spring.jpa.generate-ddl=true  #是否自动生成ddl
+#    spring.jpa.hibernate.ddl-auto=update   #生成ddl的方式
+#    spring.jpa.hibernate.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy  #选择的命名策略
 
 server:
   port: 8888
