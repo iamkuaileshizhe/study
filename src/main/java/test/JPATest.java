@@ -1,8 +1,10 @@
 package test;
 
 import cn.com.trying.Application;
-import cn.com.trying.stock.finacial.bean.Financial;
-import cn.com.trying.stock.finacial.dao.FinancialRepository;
+import cn.com.trying.stock.financial.bean.Financial;
+import cn.com.trying.stock.financial.bean.StockBean;
+import cn.com.trying.stock.financial.dao.FinancialRepository;
+import cn.com.trying.stock.financial.dao.StockInfoRepository;
 import cn.com.trying.utils.DateUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.unit.DataUnit;
 
 import java.util.List;
 
@@ -20,13 +23,27 @@ public class JPATest {
     Logger logger = LoggerFactory.getLogger(JPATest.class);
     @Autowired
     private FinancialRepository financialRepository;
+    @Autowired
+    private StockInfoRepository stockInfoRepository;
+    @Test
+    public void testInsertStock() {
+        StockBean stockBean = new StockBean();
+//        stockBean.setCode("601038");
+//        stockBean.setName("中国一拖");
+        stockBean.setCode("600127");
+        stockBean.setName("金健米业");
+
+        stockBean.setCreateTime(DateUtil.getDateTime());
+
+        stockInfoRepository.save(stockBean);
+    }
 
     @Test
-    public void testInsert() {
+    public void testFinancial() {
         String time = DateUtil.getDate();
         int insertNum = 1;
-        insert("601038",-2476,10.21,time,insertNum);
-        insert("600127",-1897,11.52,time,insertNum);
+        insert("601038",-280.1,10.26,time,insertNum);
+        insert("600127",-18300,10.67,time,insertNum);
 
     }
 

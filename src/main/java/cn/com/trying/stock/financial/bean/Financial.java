@@ -1,4 +1,4 @@
-package cn.com.trying.stock.finacial.bean;
+package cn.com.trying.stock.financial.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

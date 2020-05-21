@@ -294,19 +294,24 @@ public class DateUtil {
      * @return true(last 在now 日期之前),false(last 在now 日期之后)
      */
     public static boolean compareTo(String last, String now) {
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat(YYYYMMDDHHMMSS);
-            Date temp1 = formatter.parse(last);
-            Date temp2 = formatter.parse(now);
-            if (temp1.after(temp2))
-                return false;
-            else if (temp1.before(temp2))
-                return true;
-        } catch (ParseException e) {
-            log.debug(e.getMessage());
-        }
-        return false;
+        	return compareTo(last,now,YYYYMMDDHHMMSS);
     }
+
+
+	public static boolean compareTo(String last, String now,String pattern) {
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+			Date temp1 = formatter.parse(last);
+			Date temp2 = formatter.parse(now);
+			if (temp1.after(temp2))
+				return false;
+			else if (temp1.before(temp2))
+				return true;
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+		}
+		return false;
+	}
 
 
    /*
