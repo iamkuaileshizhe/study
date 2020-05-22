@@ -41,9 +41,16 @@ public class FinacialController {
     */
     @RequestMapping(value = "/test" ,method = RequestMethod.POST,consumes = "application/json")
     public  @ResponseBody  String test(HttpServletRequest req,@RequestBody Map<String,String> map){
-       String jsonStr = "";
+       return  getStockInfo(req, map);
+    }
 
-       String code = map.get("report_p_code");
+
+
+    @RequestMapping(value = "/getStockInfo" ,method = RequestMethod.POST)
+    public  @ResponseBody  String getStockInfo(HttpServletRequest req,@RequestBody Map<String,String> map){
+        String jsonStr = "";
+
+        String code = map.get("report_p_code");
         List<Financial> list = financialRepository.findAllByCode(code);
         List<String> xData = Lists.newArrayList();
         List<String> amountList = Lists.newArrayList();
@@ -57,7 +64,7 @@ public class FinacialController {
         for(int i=0; i< amountList.size(); i++){
             String  total = "";
             if( i == 0){
-               total = amountList.get(0);
+                total = amountList.get(0);
             }else{
                 for(int j = 0 ; j <= i; j++){
                     total = MathUtil.add(total, amountList.get(j),2);
@@ -86,8 +93,9 @@ public class FinacialController {
         dataMap.put("reportVariableInfo",JSON.toJSONString(varMap));
 
         jsonStr = JSON.toJSONString(dataMap);
-       return jsonStr;
+        return jsonStr;
     }
+
 
 
 }

@@ -3,10 +3,11 @@ package cn.com.trying.sys;
 import cn.com.trying.stock.NewStockService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class IndexController {
 
     public static void main(String[] args) {
@@ -15,8 +16,7 @@ public class IndexController {
 
     @RequestMapping("/")
     String home() {
-        String str = "启动成功";
-        return str;
+        return "/index.html";
     }
 
     @RequestMapping("/newStock")

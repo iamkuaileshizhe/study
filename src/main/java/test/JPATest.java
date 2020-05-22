@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.unit.DataUnit;
 
 import java.util.List;
 
@@ -42,8 +41,8 @@ public class JPATest {
     public void testFinancial() {
         String time = DateUtil.getDate();
         int insertNum = 1;
-        insert("601038",-280.1,10.26,time,insertNum);
-        insert("600127",-18300,10.67,time,insertNum);
+        insert("601038",983,10.57,time,insertNum);
+        insert("600127",-5973,10.16,time,insertNum);
 
     }
 
