@@ -46,6 +46,15 @@ public class FinacialController {
 
 
 
+    /**
+    * @Title:
+    * @Description: 获取指定编码的数据信息
+    * @param
+    * @return
+    * @author huxx
+    * @date 2020/5/25 上午10:47
+    * @update
+    */
     @RequestMapping(value = "/getStockInfo" ,method = RequestMethod.POST)
     public  @ResponseBody  String getStockInfo(HttpServletRequest req,@RequestBody Map<String,String> map){
         String jsonStr = "";
@@ -56,7 +65,19 @@ public class FinacialController {
         List<String> amountList = Lists.newArrayList();
         List<String> priceList = Lists.newArrayList();
         List<String> amountTotalList = Lists.newArrayList();
-        list.stream().sorted((f1,f2) -> DateUtil.compareTo(f2.getTime(),f1.getTime(),DateUtil.YYYYMMDD) ? 1 : -1).forEach(financial -> {
+        list.stream().sorted((f1,f2) ->{
+            int flag = DateUtil.compareTo(f2.getTime(),f1.getTime(),DateUtil.YYYYMMDD);
+            if(flag == 0){
+                if(f1.getNum() > f2.getNum()){
+                    flag = 1;
+                }else if(f1.getNum() == f2.getNum()){
+                    flag = 0;
+                }else{
+                    flag = -1;
+                }
+            }
+            return flag;
+        } ).forEach(financial -> {
             xData.add(financial.getTime());
             amountList.add(String.valueOf(financial.getAmount()));
             priceList.add(String.valueOf(financial.getPrice()));
@@ -94,6 +115,38 @@ public class FinacialController {
 
         jsonStr = JSON.toJSONString(dataMap);
         return jsonStr;
+    }
+
+
+
+    /**
+    * @Title:
+    * @Description: 保存资金数据
+    * @param
+    * @return
+    * @author huxx
+    * @date 2020/5/25 上午10:51
+    * @update
+    */
+    @RequestMapping(value = "/saveFinacial" ,method = RequestMethod.POST)
+    public  @ResponseBody  String saveFinacial(HttpServletRequest req,@RequestBody Map<String,String> map){
+        Map<String,String> rMap = Maps.newHashMap();
+        rMap.put("res","true");
+        rMap.put("message","保存成功");
+        String code = map.get("code");
+        String num = map.get("num");
+        String amount = map.get("amount");
+        String price = map.get("price");
+        String time = map.get("time");
+        Financial financial = new Financial();
+        financial.setCode(code);
+        financial.setAmount(Double.valueOf(amount));
+        financial.setPrice(Double.valueOf(price));
+        financial.setTime(time);
+        financial.setNum(Long.valueOf(num));
+        Financial financial1 = financialRepository.save(financial);
+
+        return JSON.toJSONString(rMap);
     }
 
 

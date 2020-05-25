@@ -293,24 +293,32 @@ public class DateUtil {
      * @param now   要比较的第二个日期格式字符串
      * @return true(last 在now 日期之前),false(last 在now 日期之后)
      */
-    public static boolean compareTo(String last, String now) {
-        	return compareTo(last,now,YYYYMMDDHHMMSS);
+    public static int compareTo(String last, String now) {
+        	return compareTo(last,now,YYYYMMDDHHMMSS) ;
     }
 
 
-	public static boolean compareTo(String last, String now,String pattern) {
+	public static int compareTo(String last, String now,String pattern) {
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 			Date temp1 = formatter.parse(last);
 			Date temp2 = formatter.parse(now);
-			if (temp1.after(temp2))
-				return false;
-			else if (temp1.before(temp2))
-				return true;
+			if (temp1.after(temp2)){
+				return -1;
+			}
+
+			else if (temp1.before(temp2)){
+				return 1;
+			}
+
+			else {
+				return 0;
+			}
+
 		} catch (ParseException e) {
 			log.error(e.getMessage());
 		}
-		return false;
+		return -1;
 	}
 
 

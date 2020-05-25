@@ -43,31 +43,36 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">编码</label>
                                 <div class="layui-input-inline">
-                                    <select name="modules" lay-verify="required" lay-search="">
+                                    <select name="code" lay-verify="required" lay-search="">
                                         <option value="">请选择编码</option>
-                                        <option value="601038">中国一拖</option>
-                                        <option value="600127">金健米业</option>
+                                        <option value="601038">一</option>
+                                        <option value="600127">米</option>
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="layui-inline">
+                                <label class="layui-form-label">序号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="num" lay-verify="required" lay-reqtext="序号是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
                             <div class="layui-inline">
                                 <label class="layui-form-label">资金金额</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="username" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                                    <input type="text" name="amount" lay-verify="required" lay-reqtext="金额是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
                                 <label class="layui-form-label">价格</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="username" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                                    <input type="text" name="price" lay-verify="required" lay-reqtext="价格是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
 
                             <div class="layui-inline">
                                 <label class="layui-form-label">日期</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                    <input type="text" name="time" id="time" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                         </div>
@@ -213,8 +218,7 @@
     </div>
 </div>
 
-<br>
-<p>支持无限嵌套，应用场景非常多！</p>
+
 
 <script src="/plugin/layui/layui.js" charset="utf-8"></script>
 <script src="/js/echart/echarts.js" charset="utf-8"></script>
@@ -234,9 +238,33 @@
             layer.msg('展开状态：'+ data.show);
         });
 
+
         //日期
         laydate.render({
-            elem: '#date'
+            elem: '#time',
+            value:  new Date()
+        });
+
+        form.on('submit(demo1)', function(data){
+            $.ajax({
+                url: basePath+ '/financial/saveFinacial'+"?time="+(new Date().getTime()),
+                type: "post",
+                dataType : "json",
+                contentType : "application/json",
+                data:JSON.stringify(data.field),
+                success: function (o) {
+                    layer.alert("提交成功", {
+                        title: '提示'
+                    })
+                },
+                error: function (e) {
+                    layer.alert("提交失败", {
+                        title: '提示'
+                    })
+                    console.log(e);
+                }
+            });
+            return false;
         });
     });
     $(document).ready(function(){
@@ -248,7 +276,7 @@
     function generateChart(basePath,code,reportFormId){
         var optionStr = " option = {\n" +
             "        title: {\n" +
-            "            text: '###title###主力资金及价格趋势统计图',\n" +
+            "            text: '###title###资金及价格趋势统计图',\n" +
             "            textStyle: {\n" +
             "                align: 'center',\n" +
             "                color: '#fff',\n" +
@@ -424,7 +452,6 @@
             contentType : "application/json",
             data:JSON.stringify(po),
             success: function (o) {
-                debugger
                 var str = optionStr.replace(/xData/,o.xData);
                 var str = str.replace(/priceData/,o.priceData);
                 var str = str.replace(/amountData/,o.amountData);

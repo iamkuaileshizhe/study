@@ -1,16 +1,19 @@
 package cn.com.trying.stock.financial.bean;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
 * @Title: Financial
-* @Description: 资金对象类
+* @Description: 资金对象视图类
 * @author huxx
 * @date 2020/5/20 下午4:00
 * @update
 */
-@Entity(name = "t_financial")
-public class Financial {
+@Entity(name = "v_financial")
+public class VFinancial {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
