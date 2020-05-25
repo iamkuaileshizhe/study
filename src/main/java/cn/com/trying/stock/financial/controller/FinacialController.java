@@ -121,7 +121,7 @@ public class FinacialController {
 
     /**
     * @Title:
-    * @Description: 保存资金数据
+    * @Description: 保存资金数据,如果code、time、num相同就进行更新操作
     * @param
     * @return
     * @author huxx
@@ -134,17 +134,25 @@ public class FinacialController {
         rMap.put("res","true");
         rMap.put("message","保存成功");
         String code = map.get("code");
-        String num = map.get("num");
-        String amount = map.get("amount");
-        String price = map.get("price");
+        long num = Long.valueOf(map.get("num"));
+        double amount = Double.valueOf(map.get("amount"));
+        double price =  Double.valueOf(map.get("price"));
         String time = map.get("time");
-        Financial financial = new Financial();
-        financial.setCode(code);
-        financial.setAmount(Double.valueOf(amount));
-        financial.setPrice(Double.valueOf(price));
-        financial.setTime(time);
-        financial.setNum(Long.valueOf(num));
-        Financial financial1 = financialRepository.save(financial);
+
+        Financial f = financialRepository.findByCodeAndTimeAndNum(code,time,num);
+        if(f != null ){
+            f.setAmount(amount);
+            f.setPrice(price);
+        }else{
+             f = new Financial();
+            f.setCode(code);
+            f.setAmount(amount);
+            f.setPrice(price);
+            f.setTime(time);
+            f.setNum(num);
+        }
+
+        Financial financial1 = financialRepository.save(f);
 
         return JSON.toJSONString(rMap);
     }

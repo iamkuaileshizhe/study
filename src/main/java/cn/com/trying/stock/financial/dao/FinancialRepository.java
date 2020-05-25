@@ -17,8 +17,8 @@ import java.util.List;
 public interface FinancialRepository extends JpaRepository<Financial,Long> {
     List<Financial> findByCode(String code);
 
-    @Query("select p from t_financial  p where p.code= :code and p.time > :time")
-    List<Financial> ByCodeAndTimeQuery(@Param("code") String code, @Param("time") String startTime);
+    @Query("select p from t_financial  p where p.code= :code and p.time = :time and p.num = :num")
+    Financial findByCodeAndTimeAndNum(@Param("code") String code, @Param("time") String time,@Param("num") long num);
     @Query(value = " SELECT f  from t_financial f  join v_financial t  on  f.code = t.code and f.time = t.time and f.num = t.num  where f.code = :code   ")
     List<Financial>  findAllByCode(String code);
 }
