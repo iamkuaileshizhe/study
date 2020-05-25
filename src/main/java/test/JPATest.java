@@ -61,7 +61,7 @@ public class JPATest {
     @Test
     public void testSelect(){
 
-        List<Financial> list = financialRepository.findAllByCode("601038");
+        List<Financial> list = financialRepository.findAllMaxByCode("601038");
         list.stream().forEach(financial -> {
             logger.error("{}---{}---{}---{}",financial.getCode(),financial.getTime(),financial.getNum(),financial.getPrice());
         });

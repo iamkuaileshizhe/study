@@ -19,7 +19,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">卡片面板</div>
                 <div class="layui-card-body">
-
+                    <div id="report_day_1" style="height:400px;"></div>
 
                 </div>
             </div>
@@ -28,7 +28,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">卡片面板</div>
                 <div class="layui-card-body">
-
+                    <div id="report_day_2" style="height:400px;"></div>
                 </div>
             </div>
         </div>
@@ -189,18 +189,25 @@
         });
     });
     $(document).ready(function(){
-        generateChart(basePath,"601038","report_1");
-        generateChart(basePath,"600127","report_2");
+        var curTime = "2020-05-25";
+        generateChart(basePath,"601038","report_1","0");
+        generateChart(basePath,"601038","report_day_1",curTime);
+        generateChart(basePath,"600127","report_2","0");
+        generateChart(basePath,"600127","report_day_2",curTime);
     })
 
 
-    function generateChart(basePath,code,reportFormId){
-        var width = $(document).width();
-        if(width <400){
-            width = 400;
+    function generateChart(basePath,code,reportFormId,time){
+        if(time == 0){
+            var width = $(document).width();
+            if(width <400){
+                width = 400;
+            }
+            width = width -50;
+            $("#"+reportFormId).css("width", width+"px");
         }
-        width = width -50;
-        $("#"+reportFormId).css("width", width+"px");
+
+
         var optionStr = " option = {\n" +
             "        title: {\n" +
             "            text: '###title###资金及价格趋势统计图',\n" +
@@ -372,6 +379,9 @@
         var myChart = echarts.init(document.getElementById(reportFormId));
         var po = {};
         po.report_p_code = code;
+        if(time != 0){
+            po.report_p_time = time;
+        }
         $.ajax({
             url: basePath+ '/financial/getStockInfo'+"?time="+(new Date().getTime()),
             type: "post",

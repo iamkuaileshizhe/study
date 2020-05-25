@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.util.unit.DataUnit;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,7 +61,13 @@ public class FinacialController {
         String jsonStr = "";
 
         String code = map.get("report_p_code");
-        List<Financial> list = financialRepository.findAllByCode(code);
+        String time = map.get("report_p_time");
+        List<Financial> list = null;
+        if(StringUtils.isEmpty(time)){
+            list = financialRepository.findAllMaxByCode(code);
+        }else{
+            list = financialRepository.findAllByCodeAndTime(code,time);
+        }
         List<String> xData = Lists.newArrayList();
         List<String> amountList = Lists.newArrayList();
         List<String> priceList = Lists.newArrayList();
