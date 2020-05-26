@@ -16,7 +16,7 @@
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
     <legend>Stock列表</legend>
 </fieldset>
-<div class="layui-collapse" lay-filter="test">
+<div id="div_body" class="layui-collapse" lay-filter="test">
 
     <div class="layui-colla-item">
         <h2 class="layui-colla-title">数据填报</h2>
@@ -86,46 +86,18 @@
         <h2 class="layui-colla-title">当日数据</h2>
         <div class="layui-colla-content" >
             <div style="padding: 20px; background-color: #F2F2F2;">
-                <div class="layui-row layui-col-space15">
-                    <div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-header">卡片面板</div>
-                            <div class="layui-card-body">
-                                <div id="report_day_1" style="height:400px;width:800px;"></div>
+                <div class="layui-row layui-col-space15" id="div_dayDetail">
+<!--                    <div class="layui-col-md6">-->
+<!--                        <div class="layui-card">-->
+<!--                            <div class="layui-card-header">卡片面板</div>-->
+<!--                            <div class="layui-card-body">-->
+<!--                                <div id="report_day_1" style="height:400px;width:800px;"></div>-->
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-header">卡片面板</div>
-                            <div class="layui-card-body">
-                                <div id="report_day_2" style="height:400px;width:800px;"></div>
-                            </div>
-                        </div>
-                    </div>
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="layui-colla-item">
-        <h2 class="layui-colla-title">一</h2>
-        <div class="layui-colla-content" >
-            <div id="report_1" style="height:400px;min-width:800px;width:100%;"></div>
-        </div>
-    </div>
-    <div class="layui-colla-item">
-        <h2 class="layui-colla-title">米</h2>
-        <div class="layui-colla-content">
-            <div id="report_2" style="height:400px;min-width:800px;width:100%;"></div>
-        </div>
-    </div>
-
-    <div class="layui-colla-item">
-        <h2 class="layui-colla-title">五方</h2>
-        <div class="layui-colla-content">
-            <div id="report_3" style="height:400px;min-width:800px;width:100%;"></div>
         </div>
     </div>
 </div>
@@ -179,12 +151,14 @@
 
         $(document).ready(function(){
             var curTime = getFormatDate();
-            generateChart(basePath,"601038","report_1","0","4");
-            generateChart(basePath,"601038","report_day_1",curTime,"dataMin");
-            generateChart(basePath,"600127","report_2","0","6");
-            generateChart(basePath,"600127","report_day_2",curTime,"dataMin");
+            generateChart(basePath,"div_body","601038","一历史数据","0",getHistoryOption("4"));
+            generateChart(basePath,"div_dayDetail","601038","一当日数据",curTime,getNowOption("dataMin"));
+            generateChart(basePath,"div_body","600127","米历史数据","0",getHistoryOption("6"));
+            generateChart(basePath,"div_dayDetail","600127","米当日数据",curTime,getNowOption("dataMin"));
 
-            generateChart(basePath,"002962","report_3","0","10");
+            generateChart(basePath,"div_body","002962","五方历史数据","0",getHistoryOption("10"));
+            generateChart(basePath,"div_dayDetail","002962","五方当日数据",curTime,getNowOption("dataMin"));
+            element.render();
         })
     });
 
@@ -200,20 +174,64 @@
         return year + "-" + month + "-" + date;
     }
 
-    function generateChart(basePath,code,reportFormId,time,startData){
+    function generateChart(basePath,parentId,code,title,time,optionStr){
         var width ;
+        var reportFormId = "code"+(new Date()).getTime();
         if(time == 0){
             width = $(document).width();
+            html = "<div class=\"layui-colla-item\">\n" +
+                "        <h2 class=\"layui-colla-title\">"+title + "</h2>\n" +
+                "        <div class=\"layui-colla-content\" >\n" +
+                "            <div id=\""+reportFormId+"\" style=\"height:400px;min-width:800px;width:100%;\"></div>\n" +
+                "        </div>\n" +
+                "    </div>"
         }else{
             width = width /2;
+            html = "<div class=\"layui-col-md6\">\n" +
+                "                        <div class=\"layui-card\">\n" +
+                "                            <div class=\"layui-card-header\">"+title+"</div>\n" +
+                "                            <div class=\"layui-card-body\">\n" +
+                "                                <div id=\""+reportFormId+"\" style=\"height:400px;width:800px;\"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>";
         }
         if(width <400){
             width = 400;
         }
         width = width -10;
+        $("#"+parentId).append(html);
         $("#"+reportFormId).css("width", width+"px");
 
 
+
+        var myChart = echarts.init(document.getElementById(reportFormId));
+        var po = {};
+        po.report_p_code = code;
+        if(time != 0){
+            po.report_p_time = time;
+        }
+        $.ajax({
+            url: basePath+ '/financial/getStockInfo'+"?time="+(new Date().getTime()),
+            type: "post",
+            dataType : "json",
+            contentType : "application/json",
+            data:JSON.stringify(po),
+            success: function (o) {
+                var str = optionStr.replace(/###xData###/,o.xData);
+                var str = str.replace(/###priceData###/,o.priceData);
+                var str = str.replace(/###amountData###/,o.amountData);
+                var str = str.replace(/###amountTotalData###/,o.amountTotalData);
+                var str = str.replace(/###title###/,o.title);
+                var option  = eval(" option = "+ str);
+                myChart.setOption(option);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    }
+    function getHistoryOption(startData){
         var optionStr = " option = {\n" +
             "        title: {\n" +
             "            text: '###title###资金及价格趋势统计图',\n" +
@@ -247,7 +265,7 @@
             "            }\n" +
             "        },\n" +
             "        xAxis: {\n" +
-            "            data: xData,\n" +
+            "            data: ###xData###,\n" +
             "        axisLine: {\n" +
             "        show: true, //隐藏X轴轴线\n" +
             "            lineStyle: {\n" +
@@ -267,7 +285,7 @@
             "    },\n" +
             "    yAxis: [{\n" +
             "        type: 'value',\n" +
-                " min: 'dataMin',"+
+            " min: 'dataMin',"+
             "        name: '元',\n" +
             "        nameTextStyle: {\n" +
             "            color: '#ebf8ac'\n" +
@@ -339,7 +357,7 @@
             "        areaStyle:{\n" +
             "            color: 'rgba(5,140,255, 0.2)'\n" +
             "        },\n" +
-            "        data: priceData\n" +
+            "        data: ###priceData###\n" +
             "    },\n" +
             "    {\n" +
             "        name: '当日资金',\n" +
@@ -359,7 +377,7 @@
             "            ])\n" +
             "        }\n" +
             "    },\n" +
-            "        data:amountData\n" +
+            "        data:###amountData###\n" +
             "    },\n" +
             "    {\n" +
             "        name: '资金汇总',\n" +
@@ -371,7 +389,7 @@
             "        symbolSize: 10, //标记的大小\n" +
             "        itemStyle: {\n" +
             "        //折线拐点标志的样式\n" +
-            "        color: '#058cff'\n" +
+            "        color: '#00FFE3'\n" +
             "    },\n" +
             "        lineStyle: {\n" +
             "            color: '#00FFE3'\n" +
@@ -379,36 +397,185 @@
             "        areaStyle:{\n" +
             "            color: 'rgba(5,140,255, 0.2)'\n" +
             "        },\n" +
-            "        data: amountTotalData\n" +
+            "        data: ###amountTotalData###\n" +
             "    }\n" +
             "    ]\n" +
             "    };";
+        return optionStr;
+    }
 
-        var myChart = echarts.init(document.getElementById(reportFormId));
-        var po = {};
-        po.report_p_code = code;
-        if(time != 0){
-            po.report_p_time = time;
-        }
-        $.ajax({
-            url: basePath+ '/financial/getStockInfo'+"?time="+(new Date().getTime()),
-            type: "post",
-            dataType : "json",
-            contentType : "application/json",
-            data:JSON.stringify(po),
-            success: function (o) {
-                var str = optionStr.replace(/xData/,o.xData);
-                var str = str.replace(/priceData/,o.priceData);
-                var str = str.replace(/amountData/,o.amountData);
-                var str = str.replace(/amountTotalData/,o.amountTotalData);
-                var str = str.replace(/###title###/,o.title);
-                var option  = eval(" option = "+ str);
-                myChart.setOption(option);
-            },
-            error: function (e) {
-                console.log(e);
-            }
-        });
+    function getNowOption(startData){
+        var option = "option = {\n" +
+            "     title: {\n" +
+            "\t        text: '###title###资金及价格趋势统计图',\n" +
+            "\t        textStyle: {\n" +
+            "\t        \t align: 'center',\n" +
+            "\t            color: '#fff',\n" +
+            "\t            fontSize: 20,\n" +
+            "\t        },\n" +
+            "\t        top: '3%',\n" +
+            "\t        left: '10%',\n" +
+            "\t    },\n" +
+            "    backgroundColor: '#0f375f',\n" +
+            "    grid: {\n" +
+            "        top: \"25%\",\n" +
+            "        bottom: \"10%\"//也可设置left和right设置距离来控制图表的大小\n" +
+            "    },\n" +
+            "    tooltip: {\n" +
+            "        trigger: \"axis\",\n" +
+            "        axisPointer: {\n" +
+            "            type: \"shadow\",\n" +
+            "            label: {\n" +
+            "                show: true\n" +
+            "            }\n" +
+            "        }\n" +
+            "    },\n" +
+            "    legend: {\n" +
+            "        data: [\"价格\", \"资金\"],\n" +
+            "        top: \"15%\",\n" +
+            "        textStyle: {\n" +
+            "            color: \"#ffffff\"\n" +
+            "        }\n" +
+            "    },\n" +
+            "    xAxis: {\n" +
+            "        data:###xData###,\n" +
+            "        axisLine: {\n" +
+            "            show: true, //隐藏X轴轴线\n" +
+            "            lineStyle: {\n" +
+            "                        color: '#01FCE3'\n" +
+            "                        }\n" +
+            "        },\n" +
+            "        axisTick: {\n" +
+            "            show: true //隐藏X轴刻度\n" +
+            "        },\n" +
+            "        axisLabel: {\n" +
+            "            show: true,\n" +
+            "            textStyle: {\n" +
+            "                color: \"#ebf8ac\" //X轴文字颜色\n" +
+            "            }\n" +
+            "        },\n" +
+            "         \n" +
+            "    },\n" +
+            "    yAxis: [{\n" +
+            "            type: \"value\",\n" +
+            "            name: \"元\",\n" +
+            "            nameTextStyle: {\n" +
+            "                color: \"#ebf8ac\"\n" +
+            "            },\n" +
+            "            splitLine: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            axisTick: {\n" +
+            "                show: true\n" +
+            "            },\n" +
+            "            axisLine: {\n" +
+            "                show: true,\n" +
+            "                lineStyle: {\n" +
+            "                            color: '#FFFFFF'\n" +
+            "                            }\n" +
+            "            },\n" +
+            "            axisLabel: {\n" +
+            "                show: true,\n" +
+            "                textStyle: {\n" +
+            "                    color: \"#ebf8ac\"\n" +
+            "                }\n" +
+            "            },\n" +
+            "             \n" +
+            "        },\n" +
+            "        {\n" +
+            "            type: \"value\",\n" +
+            "            name: \"价格\",\n" +
+            " min: '"+startData+"',"+
+            "            nameTextStyle: {\n" +
+            "                color: \"#ebf8ac\"\n" +
+            "            },\n" +
+            "            position: \"right\",\n" +
+            "            splitLine: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            axisTick: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            axisLine: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            axisLabel: {\n" +
+            "                show: true,\n" +
+            "                formatter: \"{value} \", //右侧Y轴文字显示\n" +
+            "                textStyle: {\n" +
+            "                    color: \"#ebf8ac\"\n" +
+            "                }\n" +
+            "            }\n" +
+            "        },\n" +
+            "        {\n" +
+            "            type: \"value\",\n" +
+            "            gridIndex: 0,\n" +
+            "            min: 50,\n" +
+            "            max: 100,\n" +
+            "            splitNumber: 8,\n" +
+            "            splitLine: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            axisLine: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            axisTick: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            axisLabel: {\n" +
+            "                show: false\n" +
+            "            },\n" +
+            "            splitArea: {\n" +
+            "                show: true,\n" +
+            "                areaStyle: {\n" +
+            "                    color: [\"rgba(250,250,250,0.0)\", \"rgba(250,250,250,0.05)\"]\n" +
+            "                }\n" +
+            "            }\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    series: [{\n" +
+            "            name: \"价格\",\n" +
+            "            type: \"line\",\n" +
+            "            yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用\n" +
+            "            smooth: true, //平滑曲线显示\n" +
+            "            showAllSymbol: true, //显示所有图形。\n" +
+            "            symbol: \"circle\", //标记的图形为实心圆\n" +
+            "            symbolSize: 10, //标记的大小\n" +
+            "            itemStyle: {\n" +
+            "                //折线拐点标志的样式\n" +
+            "                color: \"#058cff\"\n" +
+            "            },\n" +
+            "            lineStyle: {\n" +
+            "                color: \"#058cff\"\n" +
+            "            },\n" +
+            "            areaStyle:{\n" +
+            "                color: \"rgba(5,140,255, 0.2)\"\n" +
+            "            },\n" +
+            "            data:###priceData###\n" +
+            "        },\n" +
+            "        {\n" +
+            "            name: \"资金\",\n" +
+            "            type: \"bar\",\n" +
+            "            barWidth: 15,\n" +
+            "            itemStyle: {\n" +
+            "                normal: {\n" +
+            "                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{\n" +
+            "                            offset: 0,\n" +
+            "                            color: \"#00FFE3\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            offset: 1,\n" +
+            "                            color: \"#4693EC\"\n" +
+            "                        }\n" +
+            "                    ])\n" +
+            "                }\n" +
+            "            },\n" +
+            "            data: ###amountData###\n" +
+            "        }\n" +
+            "    ]\n" +
+            "};";
+
+        return option;
     }
 
 </script>
