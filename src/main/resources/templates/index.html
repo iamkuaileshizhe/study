@@ -19,27 +19,10 @@
 <div class="layui-collapse" lay-filter="test">
 
     <div class="layui-colla-item">
-        <h2 class="layui-colla-title">当日数据</h2>
+        <h2 class="layui-colla-title">数据填报</h2>
         <div class="layui-colla-content" >
             <div style="padding: 20px; background-color: #F2F2F2;">
                 <div class="layui-row layui-col-space15">
-                    <div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-header">卡片面板</div>
-                            <div class="layui-card-body">
-                                <div id="report_day_1" style="height:400px;width:800px;"></div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-card">
-                            <div class="layui-card-header">卡片面板</div>
-                            <div class="layui-card-body">
-                                <div id="report_day_2" style="height:400px;width:800px;"></div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="layui-col-md12">
                         <div class="layui-card">
                             <div class="layui-card-header">数据填报</div>
@@ -54,6 +37,7 @@
                                                     <option value="">请选择编码</option>
                                                     <option value="601038">一</option>
                                                     <option value="600127">米</option>
+                                                    <option value="002962">五方</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -98,6 +82,32 @@
             </div>
         </div>
     </div>
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">当日数据</h2>
+        <div class="layui-colla-content" >
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">卡片面板</div>
+                            <div class="layui-card-body">
+                                <div id="report_day_1" style="height:400px;width:800px;"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">卡片面板</div>
+                            <div class="layui-card-body">
+                                <div id="report_day_2" style="height:400px;width:800px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="layui-colla-item">
         <h2 class="layui-colla-title">一</h2>
@@ -112,6 +122,12 @@
         </div>
     </div>
 
+    <div class="layui-colla-item">
+        <h2 class="layui-colla-title">五方</h2>
+        <div class="layui-colla-content">
+            <div id="report_3" style="height:400px;min-width:800px;width:100%;"></div>
+        </div>
+    </div>
 </div>
 
 <script src="/plugin/layui/layui.js" charset="utf-8"></script>
@@ -162,17 +178,29 @@
 
 
         $(document).ready(function(){
-            var curTime = "2020-05-25";
-            generateChart(basePath,"601038","report_1","0");
-            generateChart(basePath,"601038","report_day_1",curTime);
-            generateChart(basePath,"600127","report_2","0");
-            generateChart(basePath,"600127","report_day_2",curTime);
+            var curTime = getFormatDate();
+            generateChart(basePath,"601038","report_1","0","4");
+            generateChart(basePath,"601038","report_day_1",curTime,"dataMin");
+            generateChart(basePath,"600127","report_2","0","6");
+            generateChart(basePath,"600127","report_day_2",curTime,"dataMin");
+
+            generateChart(basePath,"002962","report_3","0","10");
         })
     });
 
 
+    function getFormatDate(){
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+        var date = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        // var hour = nowDate.getHours()< 10 ? "0" + nowDate.getHours() : nowDate.getHours();
+        // var minute = nowDate.getMinutes()< 10 ? "0" + nowDate.getMinutes() : nowDate.getMinutes();
+        // var second = nowDate.getSeconds()< 10 ? "0" + nowDate.getSeconds() : nowDate.getSeconds();
+        return year + "-" + month + "-" + date;
+    }
 
-    function generateChart(basePath,code,reportFormId,time){
+    function generateChart(basePath,code,reportFormId,time,startData){
         var width ;
         if(time == 0){
             width = $(document).width();
@@ -239,6 +267,7 @@
             "    },\n" +
             "    yAxis: [{\n" +
             "        type: 'value',\n" +
+                " min: 'dataMin',"+
             "        name: '元',\n" +
             "        nameTextStyle: {\n" +
             "            color: '#ebf8ac'\n" +
@@ -265,6 +294,7 @@
             "    },\n" +
             "        {\n" +
             "            type: 'value',\n" +
+            " min: '"+startData+"',"+
             "            name: '万元',\n" +
             "            nameTextStyle: {\n" +
             "                color: '#ebf8ac'\n" +
