@@ -49,7 +49,7 @@ public class FinacialController {
 
     /**
     * @Title:
-    * @Description: 获取指定编码的数据信息
+    * @Description: 获取指定编码的数据信息  report_p_time存在时进行指定时间的数据统计，不存在时进行历史数据的统计查询
     * @param
     * @return
     * @author huxx
@@ -85,7 +85,12 @@ public class FinacialController {
             }
             return flag;
         } ).forEach(financial -> {
-            xData.add(financial.getTime());
+            if(StringUtils.isEmpty(time)){
+                xData.add(financial.getTime());
+            }else{
+                xData.add(String.valueOf(financial.getNum()));
+            }
+
             amountList.add(String.valueOf(financial.getAmount()));
             priceList.add(String.valueOf(financial.getPrice()));
         });
