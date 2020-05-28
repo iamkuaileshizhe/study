@@ -1,6 +1,7 @@
 package test;
 
 import cn.com.trying.Application;
+import cn.com.trying.crawler.service.StockCrawlerService;
 import cn.com.trying.stock.financial.bean.Financial;
 import cn.com.trying.stock.financial.bean.StockBean;
 import cn.com.trying.stock.financial.dao.FinancialRepository;
@@ -24,6 +25,15 @@ public class JPATest {
     private FinancialRepository financialRepository;
     @Autowired
     private StockInfoRepository stockInfoRepository;
+
+    @Autowired
+    private StockCrawlerService stockCrawlerService;
+
+    @Test
+    public void testCrawler(){
+        stockCrawlerService.crawlStock("");
+    }
+
     @Test
     public void testInsertStock() {
         StockBean stockBean = new StockBean();
@@ -61,7 +71,7 @@ public class JPATest {
     @Test
     public void testSelect(){
 
-        List<Financial> list = financialRepository.findAllMaxByCode("601038");
+        List<Financial> list = financialRepository.findAllMaxByCodeAndStartTimeAndEndTime("601038","1999-01-01","9999-99-99");
         list.stream().forEach(financial -> {
             logger.error("{}---{}---{}---{}",financial.getCode(),financial.getTime(),financial.getNum(),financial.getPrice());
         });

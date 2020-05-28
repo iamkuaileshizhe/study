@@ -62,9 +62,18 @@ public class FinacialController {
 
         String code = map.get("report_p_code");
         String time = map.get("report_p_time");
+        String startTime = map.get("report_p_startTime");
+        String endTime = map.get("report_p_endTime");
+        if(StringUtils.isEmpty(startTime)){
+            startTime="1999-01-01";
+        }
+        if (StringUtils.isEmpty(endTime)) {
+
+            endTime = DateUtil.getDateTime();
+        }
         List<Financial> list = null;
         if(StringUtils.isEmpty(time)){
-            list = financialRepository.findAllMaxByCode(code);
+            list = financialRepository.findAllMaxByCodeAndStartTimeAndEndTime(code,startTime,endTime);
         }else{
             list = financialRepository.findAllByCodeAndTime(code,time);
         }

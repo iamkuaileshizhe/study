@@ -38,8 +38,8 @@ public interface FinancialRepository extends JpaRepository<Financial,Long> {
     * @date 2020/5/25 下午2:40
     * @update
     */
-    @Query(value = " SELECT f  from t_financial f  join v_financial t  on  f.code = t.code and f.time = t.time and f.num = t.num  where f.code = :code   ")
-    List<Financial>  findAllMaxByCode(String code);
+    @Query(value = " SELECT f  from t_financial f  join v_financial t  on  f.code = t.code and f.time = t.time and f.num = t.num  where f.code = :code and f.time >= :startTime  and f.time <= :endTime ")
+    List<Financial>  findAllMaxByCodeAndStartTimeAndEndTime(String code,String startTime,String endTime);
 
 
     /**

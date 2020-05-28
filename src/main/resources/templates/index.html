@@ -151,12 +151,12 @@
 
         $(document).ready(function(){
             var curTime = getFormatDate();
-            generateChart(basePath,"div_body","601038","一历史数据","0",getHistoryOption("4"));
+            generateChart(basePath,"div_body","601038","一历史数据","0",getHistoryOption("4"),"2010-05-18");
             generateChart(basePath,"div_dayDetail","601038","一当日数据",curTime,getNowOption("dataMin"));
-            generateChart(basePath,"div_body","600127","米历史数据","0",getHistoryOption("6"));
+            generateChart(basePath,"div_body","600127","米历史数据","0",getHistoryOption("6"),"2010-05-20");
             generateChart(basePath,"div_dayDetail","600127","米当日数据",curTime,getNowOption("dataMin"));
 
-            generateChart(basePath,"div_body","002962","五方历史数据","0",getHistoryOption("10"));
+            generateChart(basePath,"div_body","002962","五方历史数据","0",getHistoryOption("10"),"2010-05-12");
             generateChart(basePath,"div_dayDetail","002962","五方当日数据",curTime,getNowOption("dataMin"));
             element.render();
         })
@@ -174,7 +174,7 @@
         return year + "-" + month + "-" + date;
     }
 
-    function generateChart(basePath,parentId,code,title,time,optionStr){
+    function generateChart(basePath,parentId,code,title,time,optionStr,startTime,endTime){
         var width ;
         var reportFormId = "code"+(new Date()).getTime();
         if(time == 0){
@@ -211,6 +211,8 @@
         if(time != 0){
             po.report_p_time = time;
         }
+        po.report_p_startTime = startTime;
+        po.report_p_endTime = endTime;
         $.ajax({
             url: basePath+ '/financial/getStockInfo'+"?time="+(new Date().getTime()),
             type: "post",
