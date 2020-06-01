@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
 * @Title: Financial
-* @Description: 资金对象类
+* @Description: 资金流水对象类
 * @author huxx
 * @date 2020/5/20 下午4:00
 * @update
