@@ -1,6 +1,7 @@
 package cn.com.trying.stock.financial.controller;
 
 
+import cn.com.trying.stock.enums.GoldSectionEnum;
 import cn.com.trying.stock.financial.bean.Financial;
 import cn.com.trying.stock.financial.bean.StockBean;
 import cn.com.trying.stock.financial.dao.FinancialRepository;
@@ -11,18 +12,21 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/financial")
 public class FinacialController {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     FinancialRepository financialRepository;
     @Autowired
@@ -174,6 +178,31 @@ public class FinacialController {
         return JSON.toJSONString(rMap);
     }
 
+
+
+
+    @RequestMapping(value = "/calGoldPriceForDown" ,method = RequestMethod.POST)
+    public  @ResponseBody  String calGoldPriceForDown(HttpServletRequest req,@RequestBody Map<String,String> map){
+        Map<String,String> rMap = Maps.newHashMap();
+        rMap.put("res","true");
+        rMap.put("message","保存成功");
+        String startPrice = map.get("startPrice");
+        String endPrice = map.get("endPrice");
+        String total = MathUtil.sub(endPrice,startPrice,2);
+        StringBuilder downSb = new StringBuilder();
+        Arrays.stream(GoldSectionEnum.values()).sorted((g1,g2)->{
+            return  g1.getCode().compareTo(g2.getCode());
+        }).forEach(goldSectionEnum -> {
+            downSb.append("-----");
+            downSb.append(goldSectionEnum.getText());
+            downSb.append("=");
+            downSb.append(MathUtil.sub(endPrice,MathUtil.mutiply(total,goldSectionEnum.getValue(),2),2));
+
+        });
+        rMap.put("showStr",downSb.toString());
+        logger.debug("---------------------str={}",downSb.toString());
+        return JSON.toJSONString(rMap);
+    }
 
 
 }
