@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
+/**
+* @Title: FinacialController
+* @Description:
+* @author huxx
+* @date 2020/6/10 上午10:03
+* @update
+*/
+@Api(value = "资金信息操作接口")
 @RestController
 @RequestMapping("/financial")
 public class FinacialController {
@@ -40,6 +48,10 @@ public class FinacialController {
     * @date 2020/5/21 下午3:50
     * @update
     */
+    @ApiOperation(value = "获取资金统计信息", notes="获取指定编码的数据信息  report_p_time存在时进行指定时间的数据统计，不存在时进行历史数据的统计查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="map",value="参数集合{'report_p_code':'601038','report_p_startTime':'2020-06-05','report_p_endTime':''}",required = true,example="{'report_p_code':'601038','report_p_startTime':'2020-06-05','report_p_endTime':''}")
+    })
     @RequestMapping(value = "/test" ,method = RequestMethod.POST,consumes = "application/json")
     public  @ResponseBody  String test(HttpServletRequest req,@RequestBody Map<String,String> map){
        return  getStockInfo(req, map);
