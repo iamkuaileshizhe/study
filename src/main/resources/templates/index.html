@@ -38,6 +38,8 @@
                                                     <option value="601038">一</option>
                                                     <option value="600127">米</option>
                                                     <option value="002962">五方</option>
+                                                    <option value="000871">西安饮食</option>
+                                                    <option value="603277">银都股份</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -199,12 +201,18 @@
             var curTime = getFormatDate();
             generateChart(basePath,"div_body","601038","一历史数据","0",getHistoryOption("4"),"2010-05-18");
             generateChart(basePath,"div_dayDetail","601038","一当日数据",curTime,getNowOption("dataMin"));
+
             generateChart(basePath,"div_body","600127","米历史数据","0",getHistoryOption("6"),"2010-05-20");
-            generateChart(basePath,"div_dayDetail","600127","米当日数据",curTime,getNowOption("dataMin"));
+            // generateChart(basePath,"div_dayDetail","600127","米当日数据",curTime,getNowOption("dataMin"));
 
             generateChart(basePath,"div_body","002962","五方历史数据","0",getHistoryOption("10"),"2010-05-12");
-            generateChart(basePath,"div_dayDetail","002962","五方当日数据",curTime,getNowOption("dataMin"));
+            // generateChart(basePath,"div_dayDetail","002962","五方当日数据",curTime,getNowOption("dataMin"));
 
+            generateChart(basePath,"div_body","603277","银都股份历史数据","0",getHistoryOption("10"),"2010-05-12");
+            generateChart(basePath,"div_dayDetail","603277","银都股份当日数据",curTime,getNowOption("dataMin"));
+
+            generateChart(basePath,"div_body","000871","西安饮食历史数据","0",getHistoryOption("10"),"2010-05-12");
+            generateChart(basePath,"div_dayDetail","000871","西安饮食当日数据",curTime,getNowOption("dataMin"));
 
             generateChart(basePath,"div_body","myFund","资金流水",0,getFundOption("dataMin"));
             element.render();
