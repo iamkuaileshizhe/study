@@ -71,7 +71,6 @@ public class FinacialController {
     @RequestMapping(value = "/getStockInfo" ,method = RequestMethod.POST)
     public  @ResponseBody  String getStockInfo(HttpServletRequest req,@RequestBody Map<String,String> map){
         String jsonStr = "";
-
         String code = map.get("report_p_code");
         String time = map.get("report_p_time");
         String startTime = map.get("report_p_startTime");
