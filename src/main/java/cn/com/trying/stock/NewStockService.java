@@ -21,7 +21,7 @@ public class NewStockService {
 
     @RequestMapping("home")
     String home() {
-        String str = cacluNewStock(14.39,500,20);
+        String str = cacluNewStock(5.3,1000,20);
         return str;
     }
     /**
