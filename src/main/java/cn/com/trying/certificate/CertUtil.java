@@ -33,7 +33,7 @@ public class CertUtil {
             FileInputStream fis = new FileInputStream(path+"hchy.cer");
             x509Certificate = (X509Certificate) certificateFactory.generateCertificate(fis);
             fis.close();
-
+            
             /*==========使用公钥加密============*/
             Key key = x509Certificate.getPublicKey();
             Cipher cipher = Cipher.getInstance("RSA");
