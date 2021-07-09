@@ -1,10 +1,13 @@
 package cn.com.trying.test.thread;
 
 import cn.com.trying.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.*;
 
 public class Test {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     ThreadFactory threadFactory = Executors.defaultThreadFactory();
     public static ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(3);
     private ScheduledExecutorService singleScheduledThreadPool = Executors.newSingleThreadScheduledExecutor(threadFactory);
@@ -71,7 +74,7 @@ public class Test {
     * @date 2019/9/27 下午3:58
     * @update
     */
-    public void getThreadCount(){
+    public void getAllThread(){
         ThreadGroup group = Thread.currentThread().getThreadGroup();
         ThreadGroup topGroup = group;
         // 遍历线程组树，获取根线程组
@@ -87,10 +90,12 @@ public class Test {
         Thread[] atualThreads = new Thread[actualSize];
         // 复制slackThreads中有效的值到atualThreads
         System.arraycopy(slackThreads, 0, atualThreads, 0, actualSize);
-        System.out.println(DateUtil.getDateTime()+"Threads size is " + atualThreads.length);
+        StringBuilder sb = new StringBuilder();
+        sb.append("线程总数为").append(actualSize).append("\n");
         for (Thread thread : atualThreads) {
-            System.out.println("Thread name : " + thread.getName());
+            sb.append("Thread name : " + thread.getName()+"\n");
         }
+        logger.info(sb.toString());
     }
 
     public void testForCallable(Long timeout){
@@ -116,7 +121,6 @@ public class Test {
 
     }
 
-
     public static void main(String args[]) throws InterruptedException {
         Test test = new Test();
 //        Test test2 = new Test("线程测试2");
@@ -130,12 +134,42 @@ public class Test {
 //        test.testForCallable(5L);
 
 
-        Test t = new Test();
-        t.testForScheduledThread(1);
-        while (true){
-            t.getThreadCount();
-            Thread.sleep(5*1000L );
+//        Test t = new Test();
+//        t.testForScheduledThread(1);
+//        while (true){
+//            t.getThreadCount();
+//            Thread.sleep(5*1000L );
+//        }
+        int count = 1;
+        while(true){
+            count +=1;
+            Thread thread = new Thread(new TestRunnable());
+            thread.setName("testThread"+count);
+            thread.start();
+//            Thread.yield();
+            //等待线程结束
+//            thread.join();
+//            TimeUnit.SECONDS.sleep(1);
+            //中断线程
+//            thread.interrupt();
+            if(count > 10){
+                break;
+            }
         }
+
+        TimeUnit.SECONDS.sleep(5);
+        new Test().getAllThread();
+        synchronized (TestRunnable.isWait){
+            //激活isWait对象的等待队列的所有线程
+            TestRunnable.isWait.notifyAll();
+        }
+
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //业务处理
+            }
+        });
 
 
     }

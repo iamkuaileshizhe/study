@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class NewStockService {
     public static void main(String[] args) {
         NewStockService newStockService = new NewStockService();
-        newStockService.cacluNewStock(14.39,500,20);
+        newStockService.cacluNewStock(5.3,1000,20);
     }
 
     @RequestMapping("home")
